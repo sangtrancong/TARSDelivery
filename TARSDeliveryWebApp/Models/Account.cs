@@ -11,7 +11,9 @@ namespace TARSDeliveryWebApp.Models
     [Table("Account")]
     public class Account
     {
+
       //sangvkl
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -46,7 +48,7 @@ namespace TARSDeliveryWebApp.Models
         public string Code { get; set; }
 
         public DateTime Create_at { get; set; }
-
+        //s
         public DateTime? Update_at { get; set; }
 
         public DateTime? Delete_at { get; set; }
