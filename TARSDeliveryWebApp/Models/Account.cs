@@ -13,7 +13,7 @@ namespace TARSDeliveryWebApp.Models
     {
 
       //sangvkl
-
+//sang2
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
