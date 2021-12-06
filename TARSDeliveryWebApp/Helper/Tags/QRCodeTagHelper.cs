@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Web;
 using ZXing.QrCode;
-
+//sangdz
 namespace TARSDeliveryWebApp.Helper.Tags
 {
     // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
