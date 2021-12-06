@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>@ViewData["Title"] - Admin</title>
+
+    <script src="~/js/common/jquery-3.5.1.js"></script>
+    <script src="~/js/common/all.min.js"></script>
+    <link href="~/css/common/semantic.min.css" rel="stylesheet" />
+    <link href="~/css/common/dataTables.semanticui.min.css" rel="stylesheet" />
+    <!-- <link href="~/css/common/jquery.dataTables.min.css" rel="stylesheet" /> -->
+    <link href="~/css/common/jquery-ui.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="~/css/common/report.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="Admin">TARSDELIVERY</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="dropdown-item" asp-action="Profile" asp-controller="Account" asp-area="Admin">Profile</a>
+                        <div class="dropdown-divider"></div>
+                    }
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="Account" asp-area="Admin">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="Admin">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+
+                        @*Admin*@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccounts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Account
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseAccounts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" asp-controller="Account" asp-action="Index" asp-area="Admin">Account List</a>
+                                    <a class="nav-link" asp-controller="Account" asp-action="Create" asp-area="Admin">Create Account</a>
+                                </nav>
+                            </div>
+                        }
+
+                        @*Bill*@
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBills" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                            Bill
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseBills" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" asp-controller="Bills" asp-action="Index" asp-area="Admin">Bill List</a>
+                                <a class="nav-link" asp-controller="Bills" asp-action="Create" asp-area="Admin">Create Bill</a>
+                            </nav>
+                        </div>
+
+                        @*Branch*@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBranches" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
+                                Branch
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseBranches" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" asp-controller="Branch" asp-action="Index" asp-area="Admin">Branch List</a>
+                                    <a class="nav-link" asp-controller="Branch" asp-action="Create" asp-area="Admin">Create Branch</a>
+                                </nav>
+                            </div>
+                        }
+
+                        @*PriceList*@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriceList" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+                                PriceList
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePriceList" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" asp-action="Index" asp-controller="PriceList" asp-area="Admin">PriceList Info</a>
+                                    <a class="nav-link" asp-action="Create" asp-controller="PriceList" asp-area="Admin">Create PriceList</a>
+                                </nav>
+                            </div>
+                        }
+
+                        @*Comment*@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link" asp-action="Index" asp-controller="Comment" asp-area="Admin">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Comment
+                            </a>
+                        }
+
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="~/js/common/bootstrap.bundle.min.js"></script>
+    <script src="~/js/common/jquery.dataTables.min.js"></script>
+    <script src="~/js/common/dataTables.semanticui.min.js"></script>
+    <script src="~/js/common/semantic.min.js"></script>
+    <script src="~/js/common/sweetalert.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?client=gme-americancancersociety&v=3&libraries=places&channel=digital_strides"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/common/html2pdf.bundle.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/common/common.js"></script>
+    <script src="~/js/common/common-admin.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <script src="~/js/bills/script.js"></script>
+    <script src="~/js/accounts/script.js"></script>
+    <script src="~/js/pricelists/script.js"></script>
+    <script src="~/js/branches/script.js"></script>
+    <script src="~/js/comment/script.js"></script>
+    <script>$("#tabs").tabs();</script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

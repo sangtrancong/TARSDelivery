@@ -1,0 +1,290 @@
+﻿@model IEnumerable<TARSDeliveryWebApp.Models.BillPackage>
+
+@{
+    ViewData["Title"] = "Bill";
+}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Working</a></li>
+        <li><a href="#tabs-2">Stop Working</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div class="container-fluid mt-3">
+            <table id="table-datatables" class="ui celled table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.GetBill.Id</td>
+                                <td>@item.GetPackage.Title</td>
+                                <td>@item.GetPackage.NameFrom</td>
+                                <td>@item.GetPackage.Email</td>
+                                <td>@item.GetPackage.Type</td>
+                                <td>@Html.DisplayFor(modelItem => item.GetPackage.TotalPrice)</td>
+                                @if (@item.GetPackage.Status == 1)
+                                {
+                                    <td>
+                                        <span class="badge badge-primary">Stored</span>
+                                        <span>
+                                            @if (@item.GetPackage.Distance > 0)
+                                            {
+                                                <sup class="text-danger small"><b>VPP</b></sup>
+                                            }
+                                            else
+                                            {
+                                                <sup class="text-secondary small"><b>Branch</b></sup>
+                                            }
+                                        </span>
+                                    </td>
+                                }
+                                else if (@item.GetPackage.Status == 2)
+                                {
+                                    <td>
+                                        <span class="badge badge-warning">Doing</span>
+                                        <span>
+                                            @if (@item.GetPackage.Distance > 0)
+                                            {
+                                                <sup class="text-danger small"><b>VPP</b></sup>
+                                            }
+                                            else
+                                            {
+                                                <sup class="text-secondary small"><b>Branch</b></sup>
+                                            }
+                                        </span>
+                                    </td>
+                                }
+                                else if (@item.GetPackage.Status == 3)
+                                {
+                                    <td>
+                                        <span class="badge badge-success">Finish</span>
+                                        <span>
+                                            @if (@item.GetPackage.Distance > 0)
+                                            {
+                                                <sup class="text-danger small"><b>VPP</b></sup>
+                                            }
+                                            else
+                                            {
+                                                <sup class="text-secondary small"><b>Branch</b></sup>
+                                            }
+                                        </span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="badge badge-danger">Erorr</span>
+                                        <span><sup class="text-danger small"><b>VPP</b></sup></span>
+                                    </td>
+                                }
+                                <td>@item.GetBill.Create_at</td>
+                                <td>
+                                    @if (@item.GetPackage.Status == 2)
+                                    {
+                                        <a asp-action="Details" asp-controller="Bills" asp-area="Admin" asp-route-billId="@item.GetBill.Id" class="btn btn-outline-info">Details</a>
+                                        <a asp-action="Update" asp-controller="Bills" asp-area="Admin" asp-route-packageId="@item.GetPackage.Id" class="btn btn-outline-warning">Update</a>
+                                    }
+                                    else if (@item.GetPackage.Status == 3)
+                                    {
+                                        <a asp-action="Details" asp-controller="Bills" asp-area="Admin" asp-route-billId="@item.GetBill.Id" class="btn btn-outline-info">Details</a>
+                                    }
+                                    else if (@item.GetPackage.Status == 4)
+                                    {
+                                        <a data-billId="@item.GetBill.Id" data-packageId="@item.GetPackage.Id" class="btn btn-outline-danger delete">Delete</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Details" asp-controller="Bills" asp-area="Admin" asp-route-billId="@item.GetBill.Id" class="btn btn-outline-info">Details</a>
+                                        <a asp-action="Update" asp-controller="Bills" asp-area="Admin" asp-route-packageId="@item.GetPackage.Id" class="btn btn-outline-warning">Update</a>
+                                        <a data-billId="@item.GetBill.Id" data-packageId="@item.GetPackage.Id" class="btn btn-outline-danger delete">Delete</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div id="tabs-2">
+        <div class="container-fluid mt-3">
+            <table id="table-datatables-clone" class="ui celled table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Deleted</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.ModelsDeleted)
+                    {
+                        <tr>
+                            <td>@item.GetBill.Id</td>
+                            <td>@item.GetPackage.Title</td>
+                            <td>@item.GetPackage.NameFrom</td>
+                            <td>@item.GetPackage.Email</td>
+                            <td>@item.GetPackage.Type</td>
+                            <td>@item.GetPackage.TotalPrice</td>
+                            @if (@item.GetPackage.Status == 1)
+                            {
+                                <td>
+                                    <span class="badge badge-primary">Stored</span>
+                                    <span>
+                                        @if (@item.GetPackage.Distance > 0)
+                                        {
+                                            <sup class="text-danger small"><b>VPP</b></sup>
+                                        }
+                                        else
+                                        {
+                                            <sup class="text-secondary small"><b>Branch</b></sup>
+                                        }
+                                    </span>
+                                </td>
+                            }
+                            else if (@item.GetPackage.Status == 2)
+                            {
+                                <td>
+                                    <span class="badge badge-warning">Doing</span>
+                                    <span>
+                                        @if (@item.GetPackage.Distance > 0)
+                                        {
+                                            <sup class="text-danger small"><b>VPP</b></sup>
+                                        }
+                                        else
+                                        {
+                                            <sup class="text-secondary small"><b>Branch</b></sup>
+                                        }
+                                    </span>
+                                </td>
+                            }
+                            else if (@item.GetPackage.Status == 3)
+                            {
+                                <td>
+                                    <span class="badge badge-success">Finish</span>
+                                    <span>
+                                        @if (@item.GetPackage.Distance > 0)
+                                        {
+                                            <sup class="text-danger small"><b>VPP</b></sup>
+                                        }
+                                        else
+                                        {
+                                            <sup class="text-secondary small"><b>Branch</b></sup>
+                                        }
+                                    </span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <span class="badge badge-danger">Erorr</span>
+                                    <span><sup class="text-danger small"><b>VPP</b></sup></span>
+                                </td>
+                            }
+                            <td>@item.GetBill.Delete_at</td>
+                            <td>
+                                <a asp-action="Undo" asp-controller="Bills" asp-area="Admin" asp-route-billId="@item.GetBill.Id" asp-route-packageId="@item.GetPackage.Id" class="btn btn-outline-dark">Undo</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Deleted</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/js/common/jquery-3.5.1.js"></script>*@
+<script>
+    // Process Delete
+    function processDelete(uri, apiName, id) {
+        $.ajax({
+            type: 'PUT',
+            url: `${uri}/${apiName}/${id}`,
+            success: function (response) {
+                console.log(response);
+            },
+            error: function () {
+                console.log('Error API');
+            }
+        });
+    }
+
+    $('a.btn.btn-outline-danger.delete').each(function (i) {
+        $(this).on('click', function (e) {
+            e.preventDefault();
+
+            const packageId = $(this).attr('data-packageId');
+            const billId = $(this).attr('data-billId');
+
+            console.log(packageId, ' - ', billId);
+
+            swal({
+                title: "Are you sure?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("You Are Deleted!", {
+                        icon: "success",
+                        buttons: false,
+                    });
+
+                    processDelete(uriBills, 'DeleteBill', +billId);
+                    processDelete(uriPackages, 'DeletePackage', +packageId);
+
+                    setTimeout(() => {
+                        window.location.href = "/Admin/Bills";
+                    }, 1000);
+                }
+            });
+        });
+    });
+</script>

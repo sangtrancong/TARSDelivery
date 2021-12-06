@@ -1,0 +1,105 @@
+﻿@model IEnumerable<TARSDeliveryWebApp.Models.Account>
+
+@{
+    ViewData["Title"] = "Account";
+}
+
+<div class="container-fluid mt-3">
+    <table id="table-datatables" class="ui celled table" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                @foreach (var role in ViewBag.Role)
+                {
+                    if (role.Id == item.Id)
+                    {
+                        if (role.Position == 1)
+                        {
+                            <td>
+                                <span class="badge badge-success">Admin</span>
+                            </td>
+                        }
+                        if (role.Position == 2)
+                        {
+                            <td>
+                                <span class="badge badge-primary">Employee</span>
+                            </td>
+                        }
+                        if (role.Position == 3)
+                        {
+                            <td>
+                                <span class="badge badge-warning">User</span>
+                            </td>
+                        }
+                    }
+                }
+                @if (item.Delete_at == null)
+                {
+                    <td>
+                        <span class="badge badge-success">Active</span>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <span class="badge badge-dark">InActive</span>
+                    </td>
+                }
+                <td>@item.Create_at</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Account" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>
+
+                    @* Only employee can reset password *@
+                    @foreach (var role in ViewBag.Role)
+                    {
+                        @if (role.Id == item.Id)
+                        {
+                            @if (role.Position == 2)
+                            {
+                                <a asp-action="ResetPassword" asp-controller="Account" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-outline-warning">Reset Password</a>
+                            }
+                        }
+                    }
+                    @if (item.Delete_at == null)
+                    {
+                        <a asp-area="Admin" asp-action="Delete" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-outline-danger ">Inactive</a>
+                    }
+                    else
+                    {
+                        <a asp-area="Admin" asp-action="Delete" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-outline-success ">Active</a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+

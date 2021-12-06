@@ -1,0 +1,214 @@
+﻿@{
+    var userdata = Context.Session.GetString("sAccount");
+    var roledata = Context.Session.GetString("sRole");
+    string name = "";
+    int role = 0;
+    if (userdata != null)
+    {
+        Account account = JsonConvert.DeserializeObject<Account>(userdata);
+        name = account.FullName;
+        role = int.Parse(roledata);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewData["Title"] - User</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="88536177264-jn7271q091jtvpu9fnhmf0h5119fd1cv.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Favicons -->
+    <link href="~/images/favicon.png" rel="icon">
+    <link href="~/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/animate.min.css" rel="stylesheet">
+    <link href="~/css/icofont.min.css" rel="stylesheet">
+    <link href="~/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/css/venobox.css" rel="stylesheet">
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/css/aos.css" rel="stylesheet">
+    <script src="~/js/common/all.min.js"></script>
+    <link href="~/css/common/semantic.min.css" rel="stylesheet" />
+    <link href="~/css/common/dataTables.semanticui.min.css" rel="stylesheet" />
+    <!-- <link href="~/css/common/jquery.dataTables.min.css" rel="stylesheet" /> -->
+    <link href="~/css/common/jquery-ui.css" rel="stylesheet" />
+    <!-- Template Main CSS File -->
+    <link href="~/css/stylemain.css" rel="stylesheet">
+
+
+    <!-- =======================================================
+    * Template Name: Moderna - v2.2.0
+    * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+    <!-- Custom CSS -->
+    <link href="~/css/services/styles.css" rel="stylesheet" />
+    <style>
+        #search-input {
+            @*border: 2px solid #1e4356;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-color: #4b6978;*@
+            margin-right: 25px;
+            padding-left: 16px;
+        }
+
+        #search-button {
+            padding: 7px;
+            height: 31px;
+            margin-left: 4px;
+            margin-top: 2px;
+            color: #020401;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-color: #1e4356;
+            margin-bottom: 1px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-transparent">
+        <div class="container">
+
+            <div class="logo float-left">
+                <h1 class="text-light"><a asp-action="Index" asp-controller="Home" asp-area="User"><span>TARSDelivery</span></a></h1>
+            </div>
+
+            <nav class="nav-menu float-right d-none d-lg-block">
+                <ul>
+                    <li>
+                        <form asp-action="Search" asp-controller="Package" asp-area="User" method="post">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" type="search" name="search" class="form-control" placeholder="search" />
+
+                                </div>
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" value="search" id="search-button" style="color:white;margin-bottom:1px">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+
+                            </div>
+                        </form>
+                    </li>   
+                    <li class="active"><a asp-action="Index" asp-controller="Home" asp-area="User">Home</a></li>
+                    <li><a asp-action="Index" asp-controller="Services" asp-area="User">Services</a></li>
+                    <li><a asp-action="Team" asp-controller="Home" asp-area="User">Team</a></li>
+                    <li><a asp-action="Contact" asp-controller="Home" asp-area="User">Contact Us</a></li>
+                    @if (name.Length > 0)
+                    {
+                        <li class="drop-down">
+                            <a href="">Hi @name</a>
+                            <ul>
+                                @if (role == 3)
+                                {
+                                    <li><a asp-action="Index" asp-controller="Package" asp-area="User">Bill History</a></li>
+                                }
+                                <li><a asp-action="Logout" asp-controller="Account" asp-area="User">Logout</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a asp-action="Login" asp-controller="Account" asp-area="User">Login</a></li>
+                    }
+                </ul>
+            </nav><!-- .nav-menu -->
+
+        </div>
+    </header>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+
+       
+
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4>Contact Us</h4>
+                        <p>
+                            590 Cách Mạng Tháng Tám<br>
+                            Phường 11, Quận 3<br>
+                            Thành phố Hồ Chí Minh  <br><br>
+                            <strong>Phone:</strong> +1 5589 55488 55<br>
+                            <strong>Email:</strong> tarsdeliverydemo@gmail.com<br>
+                        </p>
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 footer-info">
+                        <h3>About TARSDELIVERY</h3>
+                        <p>We deliver mail during the day to all households, on all days except weekends and public holidays. Information is provided here about mail delivery and the services you can use to ensure smooth delivery in line with your needs.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <div class="social-links mt-3">
+                            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery.easing.min.js"></script>
+    <script src="~/js/validate.js"></script>
+    <script src="~/js/venobox.min.js"></script>
+    <script src="~/js/jquery.waypoints.min.js"></script>
+    <script src="~/js/counterup.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/isotope.pkgd.min.js"></script>
+    <script src="~/js/aos.js"></script>
+    <script src="~/js/common/jquery.dataTables.min.js"></script>
+    <script src="~/js/common/dataTables.semanticui.min.js"></script>
+    <script src="~/js/common/semantic.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/js/main.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/common/common.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?client=gme-americancancersociety&v=3&libraries=places&channel=digital_strides"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="~/js/services/script.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>
