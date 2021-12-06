@@ -12,6 +12,7 @@ namespace TARSDeliveryWebApp.Models
     public class Account
     {
         //sangdz
+        //test
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
